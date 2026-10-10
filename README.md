@@ -1,30 +1,97 @@
 # SiteSpark — Logic Fixers
 
-A hackathon prototype that turns a natural-language brief into a responsive, downloadable static website using Gemini. Built with HTML, CSS, browser JavaScript and a Node.js server; no package dependencies.
+SiteSpark turns plain-language descriptions into responsive, single-page websites using Google Gemini. Built for the TriCity AI Hackathon.
+
+**Live demo:** https://sitespark-0kc4.onrender.com
+
+## Problem and solution
+
+Creating a website usually requires coding and design skills. SiteSpark lets users describe their idea, generates the layout and content, and displays a preview with an option to download the website.
+
+## Features
+
+- Generate websites from natural-language descriptions.
+- Preview desktop and mobile layouts.
+- Download a standalone HTML file.
+- Start with bakery, portfolio, or college-event example prompts.
+- Receive clear messages for generation errors and service limits.
+
+## Technology
+
+- Frontend: HTML, CSS and JavaScript
+- Backend: Node.js with built-in modules
+- AI: Google Gemini API
+- Hosting: Render
+- Database: Not required
 
 ## Run locally
 
-1. Install Node.js 22 or newer, or use an available compatible runtime.
-2. Open this folder in VS Code.
-3. Copy `.env.example` to `.env`.
-4. Create a Gemini API key at https://aistudio.google.com/apikey and put it after `GEMINI_API_KEY=` in `.env`. Never commit or share this file.
-5. In a terminal in this folder, run `node server.mjs`.
-6. Open http://localhost:3000. Enter a brief and click Generate website.
+1. Install Node.js 24.19.0 or a newer compatible Node.js 24 release.
+2. Clone or download this repository.
+3. Open the project folder in VS Code.
+4. Copy `.env.example` to a new file named `.env`.
+5. Create an API key at https://aistudio.google.com/apikey.
+6. In `.env`, put your key after `GEMINI_API_KEY=`.
+7. Keep `GEMINI_MODEL=gemini-3-flash-preview`, or choose another available model supporting `generateContent`.
+8. Open a terminal in the project folder and run `node server.mjs`.
+9. Open http://localhost:3000.
 
-No `npm install` step is needed. If `node` is not found in VS Code, install Node.js and restart VS Code. The model is configurable with `GEMINI_MODEL`; use a text model available to your key that supports generateContent. API access and quota depend on your Google project.
+No additional packages or `npm install` step are required. Gemini access depends on your API key, model availability and quota.
+
+**Never commit `.env` or share your API key.**
 
 ## How it works
 
-The browser sends the brief to a local Node.js endpoint. The server validates it, calls Gemini, checks for a completed HTML response, and adds a restrictive content policy. The browser renders it in a sandboxed iframe. Desktop/mobile controls resize the preview; Download saves a standalone HTML document.
+1. The browser sends the user's description to the Node.js server.
+2. The server validates the description and calls Gemini.
+3. Gemini generates a complete HTML document with inline styling.
+4. The server checks the response and adds a restrictive content policy.
+5. The browser displays the document in a sandboxed preview.
+6. The user can download the generated HTML.
 
-The API key stays on the server. Requests time out after 90 seconds. Invalid descriptions, missing configuration, quota failures and incomplete responses produce visible errors. No generated JavaScript or external resources are permitted. Generated pages are static: payments, submissions, logins and databases are not implemented. Review AI-generated claims and content before use.
+The API key stays on the server. Generated scripts and external resources are blocked.
 
-## Verification status
+## Deploy on Render
 
-The initial version can be checked without a key for startup and missing-key handling. End-to-end Gemini generation requires a valid key and quota and must be verified before submission. Browser visual checks and public deployment are still pending.
+Create a Node Web Service connected to this repository.
 
-## Team and submission
+- Build command: `node --check server.mjs`
+- Start command: `node server.mjs`
+- Environment variable: `GEMINI_API_KEY` containing your private key
+- Optional environment variable: `GEMINI_MODEL`
+- Node version: a compatible Node.js 24 release
 
-Team: Logic Fixers. Add each member's actual contribution here as work is completed; invite every member to the public GitHub repository. Record the use of AI assistance and third-party services as required by your organizers.
+The server uses Render's assigned port and accepts connections on `0.0.0.0` when running on Render.
 
-Before submission: test generation, both preview sizes, and HTML download; verify setup from this README; record a demo of at most four minutes; check repository and video links in an incognito window. Never include `.env` in uploads. Live hosting is not configured; this server currently listens only on the local computer. Public hosting requires access and usage controls to protect your Gemini quota.
+## Testing completed
+
+Manual testing confirmed:
+
+- Website generation and desktop preview.
+- Mobile preview and section navigation.
+- HTML download and opening the downloaded website.
+- Generation on the deployed Render website.
+- Opening the public website in an Incognito window without signing in.
+
+## Limitations
+
+- Generated websites are static prototypes. Payments, accounts and backend forms are not implemented.
+- AI-generated content and layouts should be reviewed.
+- Generation depends on Gemini availability and quota.
+- The free hosting instance can pause when inactive, delaying the first request.
+- The demo allows two simultaneous generations and 30 generation attempts per hour per running server. These in-memory limits reset when the server restarts.
+
+## Team
+
+**Logic Fixers**
+
+- Kusuma Charan Teja
+- Bukya Sathwika
+- Aadika Durga Mounima
+- Pabba Tejaswi
+
+Individual contributions will be documented before final submission.
+
+## Acknowledgements
+
+Developed with AI assistance from OpenAI Codex for implementation and troubleshooting. Google Gemini powers website generation. Render provides hosting.
